@@ -1,0 +1,12 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "node": true
+  },
+  "extends": ["airbnb", "plugin:flowtype/recommended"],
+  "plugins": ["flowtype"],
+  "rules": {
+    "indent": 2,
+    "flowtype/no-types-missing-file-annotation": 0
+  }
+}

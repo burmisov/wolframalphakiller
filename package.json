@@ -1,0 +1,37 @@
+{
+  "name": "wolframalphakiller",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --watch src/ --exec \"npm run lint && babel-node src/index.js --out-file dist/index.js -- dist/index.js\"",
+    "format": "prettier --single-quote --trailing-comma=all --write \"src/**/*.js\"",
+    "lint": "node ./node_modules/eslint/bin/eslint.js src/",
+    "flow": "flow",
+    "test": "test",
+    "compile": "babel src --out-dir .compiled --source-maps"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "express-json-validator-middleware": "^1.2.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^9.0.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
+    "eslint": "^5.6.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-flowtype": "^2.50.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.11.1",
+    "flow-bin": "^0.81.0",
+    "nodemon": "^1.18.4",
+    "prettier": "1.14.3"
+  }
+}

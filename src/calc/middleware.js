@@ -2,25 +2,35 @@ import { Validator, ValidationError } from 'express-json-validator-middleware';
 
 const validator = new Validator({ allErrors: false, coerceTypes: true });
 
-const constructErrorMessage = errors =>
-  Object.entries(errors).reduce(
+function constructErrorMessage(errorsObject) {
+  function reduceErrors(nestedObj, error) {
+    const {
+      keyword,
+      dataPath,
+      message,
+      params: { missingProperty },
+    } = error;
+
+    if (keyword === 'required') {
+      return {
+        ...nestedObj,
+        [missingProperty]: keyword,
+      };
+    }
+    return {
+      ...nestedObj,
+      [dataPath.slice(1)]: message,
+    };
+  }
+
+  return Object.entries(errorsObject).reduce(
     (obj, [name, errors]) => ({
       ...obj,
-      [name]: errors.reduce((nestedObj, { keyword, dataPath, message }) => {
-        if (keyword === 'required') {
-          return {
-            ...nestedObj,
-            [missingProperty]: keyword,
-          };
-        }
-        return {
-          ...nestedObj,
-          [dataPath.slice(1)]: message,
-        };
-      }, {}),
+      [name]: errors.reduce(reduceErrors, {}),
     }),
     {},
   );
+}
 
 export const catchValidationError = (error, request, response, next) => {
   if (error instanceof ValidationError) {
@@ -28,11 +38,13 @@ export const catchValidationError = (error, request, response, next) => {
       error: true,
       ...constructErrorMessage(error.validationErrors),
     });
-  } else if (error.name == 'division_by_zero') {
+    next();
+  } else if (error.name === 'division_by_zero') {
     response.status(400).json({
       error: true,
       message: error.message,
     });
+    next();
   } else {
     next(error);
   }

@@ -8,8 +8,10 @@ app.get(
   '/divide',
   validate({ query: DivisionSchema }),
   (request: express$Request, response: express$Response) => {
+    const { divisible, divisor } = request.query;
+
     if (divisor === 0) {
-      let error = new Error("divisor can't be 0"); // !
+      const error = new Error("divisor can't be 0"); // !
       error.name = 'division_by_zero';
 
       throw error;
@@ -25,9 +27,12 @@ app.post(
   '/sqrt',
   validate({ body: ArraySqrtSchema }),
   (request: express$Request, response: express$Response) => {
-    console.log('im here');
     const { numbers } = request.body;
 
+    // for error logging
+    if (numbers.length > 10) {
+      throw new Error('fasdfasdf');
+    }
     return response.json({
       result: numbers.map(Math.sqrt),
     });

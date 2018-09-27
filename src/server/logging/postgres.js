@@ -4,9 +4,8 @@ import db from '../db';
 export default class PostgresTransport extends Transport {
   constructor(opts) {
     super(opts);
-    const { table, connectionString } = opts;
+    const { table } = opts;
     this.table = table;
-    this.connectionString = connectionString;
     this.insertQuery = `insert into ${table}(level, message) values($1, $2)`;
   }
 
@@ -15,6 +14,7 @@ export default class PostgresTransport extends Transport {
 
     try {
       await db.query(this.insertQuery, [level, message]);
+      callback();
     } catch (err) {
       callback(err);
     }

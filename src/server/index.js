@@ -7,11 +7,33 @@ import db from './db';
 const app: express$Application = express();
 
 app.use(bodyParser.json());
-app.use(expressLogger);
+
+if (process.env.NODE_ENV !== 'test') {
+  app.use(expressLogger);
+}
+
 app.use('/api/calc', calc);
-app.use(expressErrorLogger);
+
+app.use((error, request, response, next) => {
+  if (error) {
+    response.status(501).json({
+      error: true,
+      message: 'internal server error',
+    });
+  } else {
+    next();
+  }
+});
+
+if (process.env.NODE_ENV !== 'test') {
+  app.use(expressErrorLogger);
+}
 
 app.listen(8888, '0.0.0.0', async () => {
+  if (process.env.NODE_ENV === 'test') {
+    return;
+  }
+
   try {
     await db.connect();
   } catch (err) {
@@ -20,9 +42,11 @@ app.listen(8888, '0.0.0.0', async () => {
 
   try {
     await db.query(
-      'create table if not exists logs (level varchar(80) not null, message varchar);',
+      'create table if not exists logs (level varchar(80) not null, message varchar not null);',
     );
   } catch (err) {
     throw new Error('failed to create logs table');
   }
 });
+
+export default app;

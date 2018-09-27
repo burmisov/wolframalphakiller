@@ -31,7 +31,7 @@ app.post(
 
     // for error logging
     if (numbers.length > 10) {
-      throw new Error('fasdfasdf');
+      throw new Error('test error for logging');
     }
     return response.json({
       result: numbers.map(Math.sqrt),

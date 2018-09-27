@@ -13,7 +13,7 @@
 
 _to check_
 
-1. **GET** /api/calc/divide
+1. **GET** http://localhost:8888/api/calc/divide
 2. `docker exec -it <psql_container> psql -U postgres`
 3. `\c wolframalphakiller`
 4. `select * from logs;`

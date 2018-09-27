@@ -1,0 +1,8 @@
+node_modules
+flow-typed
+.vscode
+.compiled
+task.txt
+README.md
+build
+dist

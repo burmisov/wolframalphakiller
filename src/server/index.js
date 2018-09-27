@@ -37,7 +37,8 @@ app.listen(8888, '0.0.0.0', async () => {
   try {
     await db.connect();
   } catch (err) {
-    throw new Error('unable to connect to database');
+    console.error('unable to connect to database', err);
+    process.exit(1);
   }
 
   try {
@@ -45,7 +46,8 @@ app.listen(8888, '0.0.0.0', async () => {
       'create table if not exists logs (level varchar(80) not null, message varchar not null);',
     );
   } catch (err) {
-    throw new Error('failed to create logs table');
+    console.error('failed to create logs table', err);
+    process.exit(1);
   }
 });
 

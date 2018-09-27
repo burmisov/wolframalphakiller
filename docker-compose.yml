@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  postgres:
+    image: 'postgres'
+    volumes:
+      - '/var/data/postgres'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_DB: 'wolframalphakiller'
+    healthcheck:
+      test: ['CMD', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  web:
+    build: .
+    depends_on:
+      - postgres
+    ports:
+      - '8888:8888'
+    environment:
+      NODE_ENV: 'prod'

@@ -15,8 +15,9 @@ _to check_
 
 1. **GET** /api/calc/divide
 2. `docker exec -it <psql_container> psql -U postgres`
-3. \c wolframalphakiller
-4. select \* from logs;
+3. `\c wolframalphakiller`
+4. `select \* from logs;`
+5. you should see log entries
 
 **tests**
 
